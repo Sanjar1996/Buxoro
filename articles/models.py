@@ -1,6 +1,8 @@
+from distutils.command.upload import upload
 from django.db import models
 from django.urls import reverse
 from ckeditor.fields import RichTextField
+from config.helpers import upload_file_name
 
 
 class HomeCaruselModel(models.Model):
@@ -12,10 +14,11 @@ class HomeCaruselModel(models.Model):
 
 
 class FutureModels(models.Model):
+    folder = "future"
     title = models.CharField(max_length=250)
     descriptions = models.TextField()
     plan = models.CharField(max_length=100, blank=True)
-    image = models.ImageField(upload_to='images/', blank=True)
+    image = models.ImageField(upload_to=upload_file_name, blank=True)
 
     def __str__(self):
         return self.title
@@ -32,7 +35,8 @@ class SubMenuModels(models.Model):
 
 
 class MainSiteModels(models.Model):
-    image = models.ImageField(upload_to='images/', blank=True)
+    folder = 'mainsite'
+    image = models.ImageField(upload_to=upload_file_name, blank=True)
     title = models.CharField(max_length=100)
     body = RichTextField()
     youtube_silka = models.CharField(max_length=100, blank=True)
@@ -44,10 +48,11 @@ class MainSiteModels(models.Model):
 
 
 class About(models.Model):
+    folder = 'about'
     title = models.CharField(max_length=250)
     sub_title = models.CharField(max_length=250)
     body = RichTextField()
-    image = models.ImageField(upload_to='image/', blank=True)
+    image = models.ImageField(upload_to=upload_file_name, blank=True)
 
     def __str__(self):
         return self.title
@@ -55,18 +60,27 @@ class About(models.Model):
 class AboutMaydon(models.Model):
     maydon = models.FloatField()
     title = models.CharField(max_length=150)
-    def __str__(self):
+    def __str__(self): 
         return self.title
 
 class Newsmodel(models.Model):
-    image = models.ImageField(upload_to='image/')
-    title = models.CharField(max_length=250)
+    folder = 'news'
+    image = models.ImageField(upload_to=upload_file_name)
+    title = models.CharField(max_length=100)
     summary = models.CharField(max_length=250)
     body = RichTextField()
     date = models.DateField(auto_now=True)
     
     def __str__(self):
         return self.title
+
+    # @property
+    # def title(self):
+    #     if len(self.title) < 100:
+    #         return self.title
+        
+    #     return self.title[:100] + "..."
+    
   
 
 class NewsPrise(models.Model):
@@ -79,10 +93,11 @@ class NewsPrise(models.Model):
         return self.title
 
 class XodimModel(models.Model):
+    folder = 'xodim'
     ism= models.CharField(max_length=250)
     lavozim = models.CharField(max_length=250)
     birth_day = models.DateField()
-    image = models.ImageField(upload_to='image/', blank=True)
+    image = models.ImageField(upload_to=upload_file_name, blank=True)
 
     def __str__(self) -> str:
         return self.ism
